@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RichIND - Affiliate Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7B2FBE;
+    --purple-light: #9B59B6;
+    --pink: #E91E8C;
+    --pink-dark: #C2185B;
+    --blue: #1A3CAA;
+    --blue-light: #2196F3;
+    --teal: #00897B;
+    --amber: #F9A825;
+    --sidebar-bg: #fff;
+    --body-bg: #F3F0FA;
+    --text-main: #1a1a2e;
+    --text-muted: #888;
+    --card-radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--body-bg);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 230px;
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    box-shadow: 2px 0 16px rgba(123,47,190,0.07);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .logo-wrap {
+    padding: 22px 20px 18px;
+    border-bottom: 1px solid #f0eaf8;
+  }
+  .logo-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #E91E8C, #7B2FBE);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .logo-tag {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+  .nav { padding: 12px 0; flex: 1; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 20px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.18s;
+    border-radius: 0;
+    font-weight: 500;
+    position: relative;
+  }
+  .nav-item:hover { color: var(--purple); background: #f6f0ff; }
+  .nav-item.active {
+    background: linear-gradient(90deg, #E91E8C, #7B2FBE);
+    color: #fff;
+    margin: 3px 12px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(123,47,190,0.28);
+  }
+  .nav-item.active:hover { color: #fff; background: linear-gradient(90deg, #E91E8C, #7B2FBE); }
+  .nav-icon { width: 17px; height: 17px; flex-shrink: 0; }
+
+  /* ── MAIN ── */
+  .main {
+    flex: 1;
+    padding: 24px 28px;
+    overflow-y: auto;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .hamburger {
+    width: 36px; height: 36px;
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 5px;
+    cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; height: 2.5px;
+    background: #555; border-radius: 2px;
+  }
+  .topbar-right {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E91E8C, #7B2FBE);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 14px;
+    box-shadow: 0 3px 10px rgba(123,47,190,0.3);
+    cursor: pointer;
+  }
+
+  /* ── BANNER ── */
+  .banner {
+    border-radius: 16px;
+    padding: 0;
+    margin-bottom: 22px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(120deg, #5c1aab 0%, #8b2fc9 30%, #c94fa8 60%, #f08060 85%, #f5c08a 100%);
+    min-height: 130px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 8px 30px rgba(123,47,190,0.22);
+  }
+  .banner-deco {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden; pointer-events: none;
+  }
+  .banner-deco svg { position: absolute; }
+  .banner-wave1 { top: -20px; left: 60px; opacity: 0.18; }
+  .banner-wave2 { bottom: -30px; right: 60px; opacity: 0.14; }
+  .banner-diamond1 {
+    position: absolute; right: 200px; top: -18px;
+    width: 90px; height: 90px;
+    background: rgba(255,255,255,0.10);
+    transform: rotate(45deg);
+    border-radius: 8px;
+  }
+  .banner-diamond2 {
+    position: absolute; right: 160px; bottom: -28px;
+    width: 70px; height: 70px;
+    background: rgba(255,255,255,0.07);
+    transform: rotate(30deg);
+    border-radius: 6px;
+  }
+  .banner-content {
+    display: flex; align-items: center; gap: 20px;
+    padding: 24px 28px; position: relative; z-index: 1; flex: 1;
+  }
+  .avatar-wrap {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.10);
+    font-family: 'Nunito', sans-serif;
+  }
+  .banner-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px; font-weight: 800;
+    color: #fff; letter-spacing: 0.5px;
+  }
+  .banner-id {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 6px;
+  }
+  .banner-id span {
+    font-size: 12.5px; color: rgba(255,255,255,0.85);
+  }
+  .id-val {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px; padding: 2px 10px;
+    font-size: 12px; color: #fff; font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .copy-btn {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    border: 1px solid rgba(255,255,255,0.35);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #fff;
+  }
+  .pkg-badge {
+    position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
+    background: linear-gradient(135deg, #4a1dc8, #6b3fa0);
+    color: #fff; font-size: 13px; font-weight: 600;
+    padding: 10px 20px; border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    z-index: 2; letter-spacing: 0.3px;
+  }
+
+  /* ── REVENUE CARDS ── */
+  .cards-grid-3 {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+    margin-bottom: 16px;
+  }
+  .cards-grid-2 {
+    display: grid; grid-template-columns: repeat(2,1fr); gap: 16px;
+    margin-bottom: 16px;
+  }
+  .rev-card {
+    border-radius: var(--card-radius);
+    padding: 20px 22px 16px;
+    color: #fff;
+    position: relative; overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+  .rev-card:hover { transform: translateY(-3px); }
+  .rev-card .card-circle {
+    position: absolute; right: -24px; bottom: -24px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: rgba(255,255,255,0.10);
+  }
+  .rev-card .card-circle2 {
+    position: absolute; right: 30px; top: -34px;
+    width: 70px; height: 70px; border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+  }
+  .card-purple { background: linear-gradient(135deg, #6a1fc2, #9c27b0); box-shadow: 0 6px 20px rgba(106,31,194,0.30); }
+  .card-blue   { background: linear-gradient(135deg, #1a3caa, #2979ff); box-shadow: 0 6px 20px rgba(26,60,170,0.28); }
+  .card-pink   { background: linear-gradient(135deg, #c2185b, #e91e8c); box-shadow: 0 6px 20px rgba(194,24,91,0.28); }
+  .card-teal   { background: linear-gradient(135deg, #006d5b, #00bfa5); box-shadow: 0 6px 20px rgba(0,109,91,0.28); }
+  .card-amber  { background: linear-gradient(135deg, #7a5800, #f9a825); box-shadow: 0 6px 20px rgba(122,88,0,0.28); }
+  .card-amount {
+    font-family: 'Nunito', sans-serif;
+    font-size: 28px; font-weight: 800;
+    margin-bottom: 4px; position: relative; z-index: 1;
+  }
+  .card-label {
+    font-size: 13px; color: rgba(255,255,255,0.80);
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.22);
+    margin-bottom: 11px;
+    position: relative; z-index: 1;
+  }
+  .card-link {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12.5px; color: rgba(255,255,255,0.88);
+    position: relative; z-index: 1;
+  }
+  .card-link .arrow {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+
+  /* ── BOTTOM SECTION ── */
+  .bottom-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px;
+    margin-top: 4px;
+  }
+  .widget-card {
+    background: #fff; border-radius: var(--card-radius);
+    padding: 20px 22px;
+    box-shadow: 0 2px 12px rgba(123,47,190,0.07);
+  }
+  .widget-title {
+    font-size: 14px; font-weight: 600; color: var(--text-main);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .widget-title .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .team-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 0; border-bottom: 1px solid #f5f0ff;
+  }
+  .team-row:last-child { border-bottom: none; }
+  .team-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .team-name { font-size: 13px; font-weight: 600; color: var(--text-main); }
+  .team-pkg  { font-size: 11px; color: var(--text-muted); }
+  .team-amt  { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--purple); }
+  .quick-links { display: flex; flex-direction: column; gap: 10px; }
+  .qlink {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; border-radius: 10px;
+    cursor: pointer; transition: background 0.15s;
+    border: 1px solid #f0eaf8;
+  }
+  .qlink:hover { background: #f6f0ff; }
+  .qlink-icon {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .qlink-text { font-size: 13px; font-weight: 600; color: var(--text-main); }
+  .qlink-sub  { font-size: 11px; color: var(--text-muted); }
+  .qlink-arrow { margin-left: auto; color: var(--text-muted); font-size: 15px; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo-wrap">
+    <div class="logo-name">RichIND</div>
+    <div class="logo-tag">Skill to Success</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      My Courses
+    </div>
+    <div class="nav-item active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Affiliate Dashboard
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      My Profile
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+      Affiliate Link
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      KYC
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      My Plan
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/></svg>
+      Registration Request
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      Withdrawal Request
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upgrade Request
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      My Team
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Community &amp; Support
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="topbar-right">SC</div>
+  </div>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-deco">
+      <div class="banner-diamond1"></div>
+      <div class="banner-diamond2"></div>
+      <svg class="banner-wave1" width="180" height="120" viewBox="0 0 180 120" fill="none">
+        <circle cx="90" cy="60" r="55" stroke="white" stroke-width="1.5"/>
+        <circle cx="90" cy="60" r="38" stroke="white" stroke-width="1"/>
+        <circle cx="90" cy="60" r="20" stroke="white" stroke-width="0.7"/>
+      </svg>
+      <svg class="banner-wave2" width="140" height="100" viewBox="0 0 140 100" fill="none">
+        <circle cx="70" cy="50" r="45" stroke="white" stroke-width="1.2"/>
+        <circle cx="70" cy="50" r="28" stroke="white" stroke-width="0.8"/>
+      </svg>
+    </div>
+    <div class="banner-content">
+      <div class="avatar-wrap">SC</div>
+      <div>
+        <div class="banner-name">SUMIT CHAURASIYA</div>
+        <div class="banner-id">
+          <span>ID:</span>
+          <span class="id-val">RINDCWSUGFFP</span>
+          <div class="copy-btn" onclick="navigator.clipboard.writeText('RINDCWSUGFFP')" title="Copy ID">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pkg-badge">Starter Package</div>
+  </div>
+
+  <!-- Revenue Cards Row 1 -->
+  <div class="cards-grid-3">
+    <div class="rev-card card-purple">
+      <div class="card-circle"></div><div class="card-circle2"></div>
+      <div class="card-amount" data-amount="1240">₹ 0</div>
+            <div class="card-label">Today's Revenue</div>
+      <div class="card-link">View details <div class="arrow">›</div></div>
+    </div>
+    <div class="rev-card card-blue">
+      <div class="card-circle"></div><div class="card-circle2"></div>
+      <div class="card-amount" data-amount="4680">₹ 0</div>
+            <div class="card-label">7 Days Revenue</div>
+      <div class="card-link">View details <div class="arrow">›</div></div>
+    </div>
+    <div class="rev-card card-pink">
+      <div class="card-circle"></div><div class="card-circle2"></div>
+      <div class="card-amount" data-amount="15420">₹ 0</div>
+      <div class="card-label">30 Days Revenue</div>
+      <div class="card-link">View details <div class="arrow">›</div></div>
+    </div>
+  </div>
+
+  <!-- Revenue Cards Row 2 -->
+  <div class="cards-grid-2">
+    <div class="rev-card card-teal">
+      <div class="card-circle"></div><div class="card-circle2"></div>
+      <div class="card-amount" data-amount="22420">₹ 0</div>
+      <div class="card-label">All Time Revenue</div>
+      <div class="card-link">View details <div class="arrow">›</div></div>
+    </div>
+    <div class="rev-card card-amber">
+      <div class="card-circle"></div><div class="card-circle2"></div>
+      <div class="card-amount" data-amount="320">₹ 0</div>
+            <div class="card-label">Passive Income</div>
+      <div class="card-link">View details <div class="arrow">›</div></div>
+    </div>
+  </div>
+
+  <!-- Bottom Section -->
+  <div class="bottom-grid">
+    <!-- My Team -->
+    <div class="widget-card">
+      <div class="widget-title">
+        <div class="dot" style="background:#7B2FBE"></div>
+        My Team Members
+      </div>
+      <div class="team-row">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#6a1fc2,#9c27b0)">AK</div>
+        <div><div class="team-name">Amit Kumar</div><div class="team-pkg">Starter Package</div></div>
+        <div class="team-amt">₹ 800</div>
+      </div>
+      <div class="team-row">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#1a3caa,#2979ff)">PS</div>
+        <div><div class="team-name">Priya Sharma</div><div class="team-pkg">Basic Package</div></div>
+        <div class="team-amt">₹ 500</div>
+      </div>
+      <div class="team-row">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#c2185b,#e91e8c)">RV</div>
+        <div><div class="team-name">Rohit Verma</div><div class="team-pkg">Starter Package</div></div>
+        <div class="team-amt">₹ 300</div>
+      </div>
+      <div class="team-row">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#006d5b,#00bfa5)">NS</div>
+        <div><div class="team-name">Neha Singh</div><div class="team-pkg">Starter Package</div></div>
+        <div class="team-amt">₹ 0</div>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="widget-card">
+      <div class="widget-title">
+        <div class="dot" style="background:#E91E8C"></div>
+        Quick Actions
+      </div>
+      <div class="quick-links">
+        <div class="qlink">
+          <div class="qlink-icon" style="background:#f0e8ff">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7B2FBE" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <div><div class="qlink-text">My Affiliate Link</div><div class="qlink-sub">Share &amp; earn</div></div>
+          <div class="qlink-arrow">›</div>
+        </div>
+        <div class="qlink">
+          <div class="qlink-icon" style="background:#e8f4ff">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a3caa" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+          </div>
+          <div><div class="qlink-text">Withdrawal Request</div><div class="qlink-sub">Withdraw earnings</div></div>
+          <div class="qlink-arrow">›</div>
+        </div>
+        <div class="qlink">
+          <div class="qlink-icon" style="background:#ffeaf4">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E91E8C" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div><div class="qlink-text">Upgrade Request</div><div class="qlink-sub">Upgrade your plan</div></div>
+          <div class="qlink-arrow">›</div>
+        </div>
+        <div class="qlink">
+          <div class="qlink-icon" style="background:#e6fff9">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00897B" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div><div class="qlink-text">My Team</div><div class="qlink-sub">View all members</div></div>
+          <div class="qlink-arrow">›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
